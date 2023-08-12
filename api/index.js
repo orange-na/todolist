@@ -1,0 +1,33 @@
+const express = require("express");
+const taskRoutes = require("./routes/tasks");
+const authRoutes = require("./routes/auth");
+const cors = require("cors");
+const pool = require("./db");
+const corsOptions = {
+  origin: "http://localhost:5173",
+  credentials: true,
+};
+
+const app = express();
+const PORT = 8800;
+
+app.use(express.json());
+app.use(cors(corsOptions));
+
+app.get("/", (req, res) => {
+  res.json("hello world");
+});
+
+app.get("/users", (req, res) => {
+  pool.query("SELECT * FROM users", (err, results) => {
+    if (err) return res.status(400).json(err);
+    return res.status(200).json(results.rows);
+  });
+});
+
+app.use("/api/auth", authRoutes);
+app.use("/api/tasks", taskRoutes);
+
+app.listen(PORT, () => {
+  console.log("connected to api!!");
+});

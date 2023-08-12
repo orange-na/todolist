@@ -1,24 +1,61 @@
-import { useState } from "react";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
 function Home() {
-  //   const tasks = ["task 1", "task 2"];
-  const [tasks, setTasks] = useState(["task 1", "task 2"]);
-  const [inputs, setInputs] = useState("");
+  const [tasks, setTasks] = useState([]);
+  const [inputs, setInputs] = useState({ desc: "" });
 
-  const handleTask = (e) => {
-    setInputs(e.target.value);
+  const fetchApi = async () => {
+    try {
+      const res = await axios.get("http://localhost:8800/api/tasks");
+      const data = res.data;
+      setTasks(data);
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleChange = (e) => {
+    setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
   console.log(inputs);
 
-  const handleAdd = () => {
-    setTasks((prev) => [...prev, inputs]);
-    setInputs("");
+  const handleAdd = async () => {
+    try {
+      const res = await axios.post(
+        "http://localhost:8800/api/tasks/add",
+        inputs,
+        {
+          withCredentials: true,
+        }
+      );
+      console.log(res);
+      await fetchApi();
+      setInputs({ desc: "" });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  const handleDelete = (index) => {
-    const newTasks = tasks.filter((_, i) => i !== index);
+  const handleDelete = async (task) => {
+    const taskId = task.id;
+    console.log(taskId);
+    try {
+      const res = await axios.delete(
+        "http://localhost:8800/api/tasks/delete/" + taskId
+      );
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
+    const newTasks = tasks.filter((prev) => prev.id !== taskId);
     setTasks(newTasks);
   };
+
+  useEffect(() => {
+    fetchApi();
+  }, []);
 
   return (
     <>
@@ -29,8 +66,9 @@ function Home() {
               type="text"
               placeholder="enter your task"
               className="border border-gray-200 rounded-md p-2 mr-2"
-              onChange={handleTask}
-              value={inputs}
+              onChange={handleChange}
+              name="desc"
+              value={inputs.desc}
             />
             <button className="bg-gray-200 p-2 rounded-md" onClick={handleAdd}>
               Add
@@ -43,14 +81,14 @@ function Home() {
                   key={index}
                   className="flex items-center justify-between gap-5"
                 >
-                  <p>{task}</p>
+                  <p>{task.desc}</p>
                   <div>
                     <button className="bg-blue-300 py-1 px-2 rounded-md mr-2">
                       Edit
                     </button>
                     <button
                       className="bg-red-300 py-1 px-2 rounded-md"
-                      onClick={() => handleDelete(index)}
+                      onClick={() => handleDelete(task, index)}
                     >
                       Delete
                     </button>
