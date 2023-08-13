@@ -3,6 +3,7 @@ const taskRoutes = require("./routes/tasks");
 const authRoutes = require("./routes/auth");
 const cors = require("cors");
 const pool = require("./db");
+const cookieParser = require("cookie-parser");
 const corsOptions = {
   origin: "http://localhost:5173",
   credentials: true,
@@ -13,6 +14,7 @@ const PORT = 8800;
 
 app.use(express.json());
 app.use(cors(corsOptions));
+app.use(cookieParser());
 
 app.get("/", (req, res) => {
   res.json("hello world");
