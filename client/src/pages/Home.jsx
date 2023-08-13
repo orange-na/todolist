@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import NavBar from "../components/navBar";
 
 function Home() {
   const [tasks, setTasks] = useState([]);
@@ -59,6 +60,7 @@ function Home() {
 
   return (
     <>
+      <NavBar />
       <div className="bg-slate-300 w-screen h-screen flex items-center justify-center">
         <div className="bg-white p-10 flex justify-center items-center flex-col gap-5">
           <div>
