@@ -1,20 +1,35 @@
+const jwt = require("jsonwebtoken");
 const pool = require("../db");
 
 const getTask = (req, res) => {
-  q = "SELECT * FROM tasks";
+  const token = req.cookies.accessToken;
+  if (!token) return res.json("Not authenticated!!");
 
-  pool.query(q, (err, results) => {
-    if (err) return res.status(400).json(err);
-    return res.json(results.rows);
+  jwt.verify(token, "secretkey", (err, userInfo) => {
+    if (err) return res.status(403).json("Token is not valid!!");
+    const q = "SELECT * FROM tasks WHERE uid = $1";
+    const values = [userInfo];
+
+    pool.query(q, values, (err, results) => {
+      if (err) return res.json(err);
+      return res.status(200).json(results.rows);
+    });
   });
 };
 
 const addTask = (req, res) => {
-  const q = 'INSERT INTO tasks ("desc") VALUES ($1)';
+  const token = req.cookies.accessToken;
+  if (!token) return res.json("Not authenticated!!");
 
-  pool.query(q, [req.body.desc], (err, results) => {
-    if (err) return res.json(err);
-    return res.json("Add task successfully!!");
+  jwt.verify(token, "secretkey", (err, userInfo) => {
+    if (err) return res.status(403).json("Token is not valid!!");
+    const q = 'INSERT INTO tasks ("desc", "uid") VALUES ($1, $2)';
+    const values = [req.body.desc, userInfo];
+
+    pool.query(q, values, (err, results) => {
+      if (err) return res.json(err);
+      return res.status(200).json("Post has been created!!");
+    });
   });
 };
 

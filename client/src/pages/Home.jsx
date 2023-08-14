@@ -1,4 +1,5 @@
 import axios from "axios";
+import moment from "moment";
 import { useEffect, useState } from "react";
 import NavBar from "../components/navBar";
 
@@ -6,9 +7,16 @@ function Home() {
   const [tasks, setTasks] = useState([]);
   const [inputs, setInputs] = useState({ desc: "" });
 
+  const postedDate = moment(Date.now()).format("YYYY-MM-DD HH:mm:ss");
+  console.log(postedDate);
+  const lag = moment(postedDate).fromNow();
+  console.log(lag);
+
   const fetchApi = async () => {
     try {
-      const res = await axios.get("http://localhost:8800/api/tasks");
+      const res = await axios.get("http://localhost:8800/api/tasks", {
+        withCredentials: true,
+      });
       const data = res.data;
       setTasks(data);
       console.log(data);
@@ -16,6 +24,10 @@ function Home() {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    setTimeout(() => fetchApi(), 500);
+  }, []);
 
   const handleChange = (e) => {
     setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -53,10 +65,6 @@ function Home() {
     const newTasks = tasks.filter((prev) => prev.id !== taskId);
     setTasks(newTasks);
   };
-
-  useEffect(() => {
-    fetchApi();
-  }, []);
 
   return (
     <>

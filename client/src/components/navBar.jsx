@@ -1,23 +1,14 @@
 import { useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../contexts/authContext";
-import axios from "axios";
 
 function NavBar() {
-  const { currentUser, setCurrentUser } = useContext(AuthContext);
+  const { currentUser, logout } = useContext(AuthContext);
+  const navigate = useNavigate();
 
-  const handleLogout = async () => {
-    try {
-      const res = await axios.post(
-        "http://localhost:8800/api/auth/logout",
-        {},
-        { withCredentials: true }
-      );
-      setCurrentUser("");
-      console.log(res.data);
-    } catch (error) {
-      console.log(error);
-    }
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
   };
   return (
     <header>
@@ -33,7 +24,7 @@ function NavBar() {
             <button>Login</button>
           </Link>
           <button onClick={handleLogout}>Logout</button>
-          <p>{currentUser.username}</p>
+          <p>{currentUser && currentUser.username}</p>
         </div>
       </div>
     </header>
