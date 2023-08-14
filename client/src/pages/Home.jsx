@@ -64,7 +64,7 @@ function Home() {
   return (
     <>
       <NavBar />
-      <div className="bg-slate-200 w-screen h-screen flex items-center justify-center">
+      <div className="bg-slate-400 w-screen h-screen flex items-center justify-center">
         <div className="bg-white py-10 px-16 flex flex-col gap-5 rounded-md shadow-xl mt-[100px] max-h-[600px] overflow-scroll">
           <div className="text-center">
             <input
