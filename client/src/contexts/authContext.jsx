@@ -13,7 +13,7 @@ export const AuthContextProvider = ({ children }) => {
   const login = async (inputs) => {
     try {
       const res = await axios.post(
-        "http://localhost:8800/api/auth/login",
+        "https://todolistapi-q386.onrender.com/api/auth/login",
         inputs,
         {
           withCredentials: true,
@@ -29,7 +29,7 @@ export const AuthContextProvider = ({ children }) => {
   const logout = async () => {
     try {
       const res = await axios.post(
-        "http://localhost:8800/api/auth/logout",
+        "https://todolistapi-q386.onrender.com/api/auth/logout",
         {},
         { withCredentials: true }
       );

@@ -9,9 +9,12 @@ function Home() {
 
   const fetchApi = async () => {
     try {
-      const res = await axios.get("http://localhost:8800/api/tasks", {
-        withCredentials: true,
-      });
+      const res = await axios.get(
+        "https://todolistapi-q386.onrender.com/api/tasks",
+        {
+          withCredentials: true,
+        }
+      );
       const data = res.data;
       setTasks(data);
       console.log(data);
@@ -32,7 +35,7 @@ function Home() {
   const handleAdd = async () => {
     try {
       const res = await axios.post(
-        "http://localhost:8800/api/tasks/add",
+        "https://todolistapi-q386.onrender.com/api/tasks/add",
         { ...inputs, date: moment(Date.now()).format("YYYY-MM-DD HH:mm:ss") },
         {
           withCredentials: true,
@@ -51,7 +54,7 @@ function Home() {
     console.log(taskId);
     try {
       const res = await axios.delete(
-        "http://localhost:8800/api/tasks/delete/" + taskId
+        "https://todolistapi-q386.onrender.com/api/tasks/delete/" + taskId
       );
       console.log(res);
     } catch (error) {

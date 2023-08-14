@@ -18,7 +18,7 @@ function Register() {
   const handleRegister = async () => {
     try {
       const res = await axios.post(
-        "http://localhost:8800/api/auth/register",
+        "https://todolistapi-q386.onrender.com/api/auth/register",
         inputs,
         { withCredentials: true }
       );

@@ -10,7 +10,6 @@ const corsOptions = {
 };
 
 const app = express();
-const PORT = 8800;
 
 app.use(express.json());
 app.use(cors(corsOptions));
@@ -30,6 +29,6 @@ app.get("/users", (req, res) => {
 app.use("/api/auth", authRoutes);
 app.use("/api/tasks", taskRoutes);
 
-app.listen(PORT, () => {
+app.listen(process.env.PORT || 8800, () => {
   console.log("connected to api!!");
 });
