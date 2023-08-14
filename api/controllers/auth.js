@@ -7,7 +7,8 @@ const register = (req, res) => {
 
   pool.query(q, [req.body.username], (err, results) => {
     if (err) return res.status(404).json(err);
-    if (results.rows.length) return res.json("User already exists!!");
+    if (results.rows.length)
+      return res.status(403).json("User already exists!!");
 
     const salt = bcrypt.genSaltSync(10);
     const hashedPassword = bcrypt.hashSync(req.body.password, salt);
@@ -27,14 +28,15 @@ const login = (req, res) => {
 
   pool.query(q, [req.body.username], (err, results) => {
     if (err) res.status(404).json(err);
-    if (!results.rows.length) return res.json("User not found!!");
+    if (!results.rows.length) return res.status(403).json("User not found!!");
 
     const checkPassword = bcrypt.compareSync(
       req.body.password,
       results.rows[0].password
     );
 
-    if (!checkPassword) return res.json("Password is not correct!!");
+    if (!checkPassword)
+      return res.status(403).json("Password is not correct!!");
 
     const token = jwt.sign(results.rows[0].id, "secretkey");
     const { password, ...others } = results.rows[0];

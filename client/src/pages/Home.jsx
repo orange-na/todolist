@@ -7,11 +7,6 @@ function Home() {
   const [tasks, setTasks] = useState([]);
   const [inputs, setInputs] = useState({ desc: "" });
 
-  const postedDate = moment(Date.now()).format("YYYY-MM-DD HH:mm:ss");
-  console.log(postedDate);
-  const lag = moment(postedDate).fromNow();
-  console.log(lag);
-
   const fetchApi = async () => {
     try {
       const res = await axios.get("http://localhost:8800/api/tasks", {
@@ -38,7 +33,7 @@ function Home() {
     try {
       const res = await axios.post(
         "http://localhost:8800/api/tasks/add",
-        inputs,
+        { ...inputs, date: moment(Date.now()).format("YYYY-MM-DD HH:mm:ss") },
         {
           withCredentials: true,
         }
@@ -69,18 +64,21 @@ function Home() {
   return (
     <>
       <NavBar />
-      <div className="bg-slate-300 w-screen h-screen flex items-center justify-center">
-        <div className="bg-white p-10 flex justify-center items-center flex-col gap-5">
-          <div>
+      <div className="bg-slate-200 w-screen h-screen flex items-center justify-center">
+        <div className="bg-white py-10 px-16 flex flex-col gap-5 rounded-md shadow-xl mt-[100px] max-h-[600px] overflow-scroll">
+          <div className="text-center">
             <input
               type="text"
-              placeholder="enter your task"
+              placeholder="Enter your task"
               className="border border-gray-200 rounded-md p-2 mr-2"
               onChange={handleChange}
               name="desc"
               value={inputs.desc}
             />
-            <button className="bg-gray-200 p-2 rounded-md" onClick={handleAdd}>
+            <button
+              className="bg-gray-200 py-2 px-5 text-gray-900 rounded-md hover:bg-gray-300 duration-200"
+              onClick={handleAdd}
+            >
               Add
             </button>
           </div>
@@ -91,16 +89,16 @@ function Home() {
                   key={index}
                   className="flex items-center justify-between gap-5"
                 >
+                  <p className="text-gray-500 text-sm">
+                    {moment(task.date).fromNow()}
+                  </p>
                   <p>{task.desc}</p>
                   <div>
-                    <button className="bg-blue-300 py-1 px-2 rounded-md mr-2">
-                      Edit
-                    </button>
                     <button
-                      className="bg-red-300 py-1 px-2 rounded-md"
+                      className="bg-red-300 text-white py-1 px-3 rounded-md hover:bg-red-400 duration-200"
                       onClick={() => handleDelete(task, index)}
                     >
-                      Delete
+                      done
                     </button>
                   </div>
                 </div>

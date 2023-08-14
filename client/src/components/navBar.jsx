@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../contexts/authContext";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
 function NavBar() {
   const { currentUser, logout } = useContext(AuthContext);
@@ -11,20 +12,32 @@ function NavBar() {
     navigate("/login");
   };
   return (
-    <header>
-      <div className="h-[100px] flex justify-between items-center px-[50px]">
+    <header className="">
+      <div className="h-[85px] flex justify-between items-center px-[50px] fixed w-full bg-white shadow-lg">
         <div>
-          <h1>To Do List</h1>
+          <Link to="/">
+            <h1 className="text-[25px]">To Do List</h1>
+          </Link>
         </div>
-        <div className="flex gap-5">
+        <div className="flex gap-8 items-center">
+          <p>
+            <AccountCircleIcon
+              className="text-gray-500 mr-2"
+              sx={{ fontSize: 35 }}
+            />
+            {currentUser && currentUser.username}
+          </p>
           <Link to="/register">
-            <button>Register</button>
+            <button className="bg-green-600 rounded-md py-2 px-3 text-white hover:bg-green-500 duration-200">
+              Sign up
+            </button>
           </Link>
-          <Link to="/login">
-            <button>Login</button>
-          </Link>
-          <button onClick={handleLogout}>Logout</button>
-          <p>{currentUser && currentUser.username}</p>
+          <button
+            className="bg-green-600 rounded-md py-2 px-3 text-white hover:bg-green-500 duration-200"
+            onClick={handleLogout}
+          >
+            Log out
+          </button>
         </div>
       </div>
     </header>

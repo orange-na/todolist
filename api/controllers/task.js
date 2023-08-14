@@ -23,8 +23,8 @@ const addTask = (req, res) => {
 
   jwt.verify(token, "secretkey", (err, userInfo) => {
     if (err) return res.status(403).json("Token is not valid!!");
-    const q = 'INSERT INTO tasks ("desc", "uid") VALUES ($1, $2)';
-    const values = [req.body.desc, userInfo];
+    const q = 'INSERT INTO tasks ("desc", "uid", "date") VALUES ($1, $2, $3)';
+    const values = [req.body.desc, userInfo, req.body.date];
 
     pool.query(q, values, (err, results) => {
       if (err) return res.json(err);
