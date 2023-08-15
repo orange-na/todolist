@@ -18,9 +18,8 @@ const pool = require("../db");
 // };
 
 const getTask = (req, res) => {
-  const token = req.cookies.accessToken;
   const q = "SELECT * FROM tasks WHERE uid = $1";
-  const values = [req.body.id];
+  const values = [req.body.uid];
   console.log(values);
 
   pool.query(q, values, (err, results) => {

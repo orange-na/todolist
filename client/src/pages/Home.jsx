@@ -29,7 +29,7 @@ function Home() {
     try {
       const res = await axios.get(
         "https://todolistapi-q386.onrender.com/api/tasks",
-        currentUser,
+        { uid: currentUser.id },
         {
           withCredentials: true,
         }
