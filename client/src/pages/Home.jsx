@@ -1,16 +1,35 @@
 import axios from "axios";
 import moment from "moment";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import NavBar from "../components/navBar";
+import { AuthContext } from "../contexts/authContext";
 
 function Home() {
   const [tasks, setTasks] = useState([]);
   const [inputs, setInputs] = useState({ desc: "" });
 
+  // const fetchApi = async () => {
+  //   try {
+  //     const res = await axios.get(
+  //       "https://todolistapi-q386.onrender.com/api/tasks",
+  //       {
+  //         withCredentials: true,
+  //       }
+  //     );
+  //     const data = res.data;
+  //     setTasks(data);
+  //     console.log(data);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+
+  const { currentUser } = useContext(AuthContext);
   const fetchApi = async () => {
     try {
       const res = await axios.get(
         "https://todolistapi-q386.onrender.com/api/tasks",
+        currentUser,
         {
           withCredentials: true,
         }
@@ -36,7 +55,11 @@ function Home() {
     try {
       const res = await axios.post(
         "https://todolistapi-q386.onrender.com/api/tasks/add",
-        { ...inputs, date: moment(Date.now()).format("YYYY-MM-DD HH:mm:ss") },
+        {
+          ...inputs,
+          date: moment(Date.now()).format("YYYY-MM-DD HH:mm:ss"),
+          uid: currentUser.id,
+        },
         {
           withCredentials: true,
         }
