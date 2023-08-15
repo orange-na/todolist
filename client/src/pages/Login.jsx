@@ -4,7 +4,6 @@ import { Link, useNavigate } from "react-router-dom";
 
 function Login() {
   const { login, err } = useContext(AuthContext);
-  console.log(err);
   const navigate = useNavigate();
   const [inputs, setInputs] = useState({
     username: "",
