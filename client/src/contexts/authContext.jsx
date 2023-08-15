@@ -20,7 +20,6 @@ export const AuthContextProvider = ({ children }) => {
         }
       );
       setCurrentUser(res.data);
-      console.log(res.data);
     } catch (error) {
       setErr(error.response.data);
     }
@@ -28,13 +27,12 @@ export const AuthContextProvider = ({ children }) => {
 
   const logout = async () => {
     try {
-      const res = await axios.post(
+      await axios.post(
         "https://todolistapi-q386.onrender.com/api/auth/logout",
         {},
         { withCredentials: true }
       );
       setCurrentUser(null);
-      console.log(res.data);
     } catch (error) {
       console.log(error);
     }

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Register() {
   const navigate = useNavigate();
@@ -14,15 +14,13 @@ function Register() {
     setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  console.log(inputs);
   const handleRegister = async () => {
     try {
-      const res = await axios.post(
+      await axios.post(
         "https://todolistapi-q386.onrender.com/api/auth/register",
         inputs,
         { withCredentials: true }
       );
-      console.log(res);
       navigate("/login");
     } catch (error) {
       setErr(error.response.data);
@@ -55,6 +53,15 @@ function Register() {
             >
               Sign up
             </button>
+            <p>
+              You have an account??
+              <Link
+                to="/login"
+                className="text-red-400 hover:text-red-500 duration-200 ml-3"
+              >
+                Log in
+              </Link>
+            </p>
           </div>
         </div>
       </div>

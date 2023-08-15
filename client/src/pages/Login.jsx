@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import { AuthContext } from "../contexts/authContext";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Login() {
   const { login, err } = useContext(AuthContext);
@@ -15,8 +15,6 @@ function Login() {
     setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  console.log(inputs);
-
   const handleLogin = () => {
     try {
       login(inputs).then(() => navigate("/"));
@@ -24,8 +22,6 @@ function Login() {
       console.log(error);
     }
   };
-
-  console.log(err);
 
   return (
     <>
@@ -54,6 +50,15 @@ function Login() {
             >
               Log in
             </button>
+            <p>
+              You do not have an account??
+              <Link
+                to="/register"
+                className="text-red-400 hover:text-red-500 duration-200 ml-3"
+              >
+                Sing up
+              </Link>
+            </p>
           </div>
         </div>
       </div>

@@ -36,7 +36,6 @@ function Home() {
       );
       const data = res.data;
       setTasks(data);
-      console.log(data);
     } catch (error) {
       console.log(error);
     }
@@ -49,11 +48,10 @@ function Home() {
   const handleChange = (e) => {
     setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
-  console.log(inputs);
 
   const handleAdd = async () => {
     try {
-      const res = await axios.post(
+      await axios.post(
         "https://todolistapi-q386.onrender.com/api/tasks/add",
         {
           ...inputs,
@@ -64,7 +62,6 @@ function Home() {
           withCredentials: true,
         }
       );
-      console.log(res);
       await fetchApi();
       setInputs({ desc: "" });
     } catch (error) {
@@ -74,12 +71,10 @@ function Home() {
 
   const handleDelete = async (task) => {
     const taskId = task.id;
-    console.log(taskId);
     try {
-      const res = await axios.delete(
+      await axios.delete(
         "https://todolistapi-q386.onrender.com/api/tasks/delete/" + taskId
       );
-      console.log(res);
     } catch (error) {
       console.log(error);
     }
