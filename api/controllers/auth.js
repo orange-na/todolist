@@ -45,7 +45,7 @@ const login = (req, res) => {
 
     res
       .cookie("accessToken", token, {
-        domain: "todolist-dusky-gamma.vercel.app",
+        domain: "https://todolist-dusky-gamma.vercel.app",
         httpOnly: true,
       })
       .status(200)
