@@ -27,7 +27,7 @@ function Home() {
   const { currentUser } = useContext(AuthContext);
   const fetchApi = async () => {
     try {
-      const res = await axios.get(
+      const res = await axios.post(
         "https://todolistapi-q386.onrender.com/api/tasks",
         { uid: currentUser.id },
         {
