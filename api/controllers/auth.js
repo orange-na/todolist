@@ -3,26 +3,26 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 const register = (req, res) => {
-  // q = "SELECT * FROM users WHERE username = $1";
+  q = "SELECT * FROM users WHERE username = $1";
 
-  // pool.query(q, [req.body.username], (err, results) => {
-  //   console.log(results);
-  //   if (err) return res.status(404).json(err);
-  //   console.log(results);
-  //   if (results.rows.length)
-  //     return res.status(403).json("User already exists!!");
-
-  const salt = bcrypt.genSaltSync(10);
-  const hashedPassword = bcrypt.hashSync(req.body.password, salt);
-
-  const q = "INSERT INTO users (username, password) VALUES ($1, $2)";
-  const values = [req.body.username, hashedPassword];
-
-  pool.query(q, values, (err, results) => {
+  pool.query(q, [req.body.username], (err, results) => {
+    console.log(results);
     if (err) return res.status(404).json(err);
-    return res.status(200).json("User has been created!!");
+    console.log(results);
+    if (results.rows.length)
+      return res.status(403).json("User already exists!!");
+
+    const salt = bcrypt.genSaltSync(10);
+    const hashedPassword = bcrypt.hashSync(req.body.password, salt);
+
+    const q = "INSERT INTO users (username, password) VALUES ($1, $2)";
+    const values = [req.body.username, hashedPassword];
+
+    pool.query(q, values, (err, results) => {
+      if (err) return res.status(404).json(err);
+      return res.status(200).json("User has been created!!");
+    });
   });
-  // });
 };
 
 const login = (req, res) => {
@@ -45,6 +45,9 @@ const login = (req, res) => {
 
     res
       .cookie("accessToken", token, {
+        sameSite: "none",
+        secure: true,
+        domain: "https://todolist-dusky-gamma.vercel.app",
         httpOnly: true,
       })
       .status(200)
