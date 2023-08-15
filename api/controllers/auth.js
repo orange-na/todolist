@@ -6,7 +6,9 @@ const register = (req, res) => {
   q = "SELECT * FROM users WHERE username = $1";
 
   pool.query(q, [req.body.username], (err, results) => {
+    console.log(results);
     if (err) return res.status(404).json(err);
+    console.log(results);
     if (results.rows.length)
       return res.status(403).json("User already exists!!");
 
