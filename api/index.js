@@ -5,7 +5,7 @@ const cors = require("cors");
 const pool = require("./db");
 const cookieParser = require("cookie-parser");
 const corsOptions = {
-  origin: "todolist-dusky-gamma.vercel.app",
+  origin: "https://todolist-dusky-gamma.vercel.app",
   credentials: true,
 };
 
