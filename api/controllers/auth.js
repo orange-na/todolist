@@ -45,10 +45,8 @@ const login = (req, res) => {
 
     res
       .cookie("accessToken", token, {
-        sameSite: "none",
-        secure: true,
         domain:
-          process.env.NODE_ENV === "development" ? ".localhost" : ".domain.com",
+          process.env.NODE_ENV === "development" ? ".localhost" : ".vercel.app",
         httpOnly: true,
       })
       .status(200)
